@@ -34,13 +34,42 @@ public class MulticastClient implements Runnable {
 		socket.close();
 	}
 
+	private static void prompt(){
+		char c = '_';
+		while (c != 'e' && c != 'q'){
+			print();
+			System.out.println("Please select an option.\n1) Send text message.\n2) Send image file.\n3) Send video file.\ne/q) Exit.");
+			try {
+				c = (char) System.in.read(); 
+			}
+			catch (IOException e) {
+				e.printStackTrace();
+			}
+			switch (c){
+				case '1': send_text(); break;
+				// case '2': send_image(); break;
+				// case '3': send_video(); break;
+				default: break;
+			}
+			receiveUDPMessage();
+		}
+	}
+
+	private static void send_text(){
+
+
+
+	}
+
+
 	@Override
 	public void run(){
 		
 		try {
-			receiveUDPMessage();
+			prompt();
 		} catch(IOException ex) {
 			ex.printStackTrace();
 		}
 	}
+
 }
