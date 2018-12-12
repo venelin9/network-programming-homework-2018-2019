@@ -57,7 +57,9 @@ public class MulticastClient implements Runnable {
 
 	private static void send_text(){
 
-
+		String str="";
+		Socket s = new Socket("127.0.0.1", 8889);
+		OutputStream out = s.getOutputStream();
 
 	}
 
