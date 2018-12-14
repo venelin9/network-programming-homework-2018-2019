@@ -13,8 +13,8 @@ public class MulticastClient implements Runnable {
 	}
 	private static void prompt(){
 		String c = "";
+		System.out.println("Please select an option.\t1) Send a text message.\t2) Send an image file.\t3) Send a video file.\te/q) Exit.");
 		while (!c.equals("e") && !c.equals("q")){
-			System.out.println("Please select an option.\t1) Send a text message.\t2) Send an image file.\t3) Send a video file.\te/q) Exit.");
 			c=in.nextLine();
 			switch (c){
 				case "1": send_text(); break;
@@ -23,21 +23,48 @@ public class MulticastClient implements Runnable {
 				default: break;
 			}
 		}
-		System.out.println("ending");
+		System.out.println("Exiting...");
 		in.close();
 		run=0;
 		try { tmc.join(); }
 		catch (InterruptedException e){ e.printStackTrace(); }
 	}
+	// private static void send_image(){
+	// 	String str = "";
+	// 	System.out.print("Enter image name: ");
+	// 	str = in.nextLine();
+	// 	if(new File("./images/"+str).isFile()) {
+	// 		try {
+	// 			BufferedReader in = new BufferedReader(new FileReader("./logs/"+file_name));
+	// 			System.out.println("Printing contents of: " + file_name + '\n');
+	// 			String line = null;
+	// 			while((line = in.readLine()) != null){
+	// 				System.out.println(line);
+	// 			}
+	// 		}
+	// 		catch (IOException e){
+	// 			e.printStackTrace();
+	// 		}
+	// 	}
+	// 	else {
+    	// 		System.out.println("Invalid file: " + str);
+	// 	}
+	//
+	// }
 	private static void send_text(){
 		try { 
 			Socket s = new Socket("127.0.0.1", 8889);
+			OutputStream out=s.getOutputStream();
 			String str = "";
+
+			out.write("--TEXT--".getBytes(),0,8);
+
 			System.out.print("Enter message: ");
 			str = in.nextLine();
 			byte[] msg = str.getBytes();
-			OutputStream out=s.getOutputStream();
 			out.write(msg,0,msg.length);
+
+			out.write("--END--".getBytes(),0,7);
 			s.shutdownOutput();
 		}
 		catch (UnknownHostException e) { System.out.println("No server found on this host: 127.0.0.1\n"); }
@@ -51,7 +78,6 @@ public class MulticastClient implements Runnable {
 		socket.joinGroup(group);
 		while( run == 1 ) {
 			DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
-			// if (run==0) break;
 			socket.receive(packet);
 			String msg = new String(packet.getData(), packet.getOffset(), packet.getLength());
 			if (!msg.equals("")) System.out.println(msg);
