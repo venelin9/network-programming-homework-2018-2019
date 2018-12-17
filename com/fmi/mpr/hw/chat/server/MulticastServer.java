@@ -73,7 +73,6 @@ class ServerThread extends Thread{
 					MulticastServer.sendMessage(data);
 				}
 				MulticastServer.sendEnd();
-				MulticastServer.sendEnd();
 			}
 
 			else if (s.equals("--IMG--")){
@@ -97,7 +96,6 @@ class ServerThread extends Thread{
 				fin.close();
 				MulticastServer.img++;
 				MulticastServer.sendEnd();
-				MulticastServer.sendEnd();
 			}
 
 			else if (s.equals("--VID--")){
@@ -120,7 +118,6 @@ class ServerThread extends Thread{
 				}
 				fin.close();
 				MulticastServer.video++;
-				MulticastServer.sendEnd();
 				MulticastServer.sendEnd();
 			}
 
