@@ -66,9 +66,8 @@ class ServerThread extends Thread{
 
 			if (s.equals("--TXT--")){
 				System.out.println(">> Text");
-				// int count = 0;
+				MulticastServer.sendEnd();
 				while ( input.read(data) >=0 ){
-					// if ( count == 0 ){ MulticastServer.sendStart(0,0); count = 1; }
 					MulticastServer.sendStart(0,0);
 					MulticastServer.sendMessage(data);
 				}
@@ -89,6 +88,7 @@ class ServerThread extends Thread{
 				output.close();
 				count = 0;
 				BufferedInputStream fin = new BufferedInputStream(new FileInputStream("./images/image_" + MulticastServer.img));
+				MulticastServer.sendEnd();
 				while ( fin.read(data) >= 0 ){
 					if ( count == 0 ) { MulticastServer.sendStart(1,size); count = 1; }
 					MulticastServer.sendMessage(data);
@@ -112,6 +112,7 @@ class ServerThread extends Thread{
 				output.close();
 				count = 0;
 				BufferedInputStream fin = new BufferedInputStream(new FileInputStream("./videos/video_" + MulticastServer.video));
+				MulticastServer.sendEnd();
 				while ( fin.read(data) >= 0 ){
 					if ( count == 0 ) { MulticastServer.sendStart(2,size); count = 1; }
 					MulticastServer.sendMessage(data);
